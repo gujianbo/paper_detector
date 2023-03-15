@@ -22,6 +22,8 @@ class PageExtraction:
         pub_data = selector.xpath("//span[@class='CitationCoverDate']/text()")
         abstract = selector.xpath("//div[@class='abstractSection abstractInFull']/p/text()")
 
+        ref = selector.xpath("//span[@class='references__note']/text()")
+
         info = {
             "title": title[0],
             "author": author,
@@ -31,6 +33,7 @@ class PageExtraction:
             "doi": doi[0],
             "pub_data": pub_data[0],
             "abstract": abstract,
+            "ref": ref
         }
         print(info)
 
