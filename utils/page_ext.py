@@ -3,7 +3,7 @@ from lxml import etree
 
 
 class PageExtraction:
-    def __init__(self, head):
+    def __init__(self, head={'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'}):
         self.head = head
 
     def get_html_text(self, url):
