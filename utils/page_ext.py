@@ -20,7 +20,7 @@ class PageExtraction:
         page = selector.xpath("//span[@class='epub-section__pagerange']/text()")
         doi = selector.xpath("//a[@class='issue-item__doi']/text()")
         pub_data = selector.xpath("//span[@class='CitationCoverDate']/text()")
-        abstract = selector.xpath("//div[@class='abstractSection abstractInFull']/p/text()")
+        abstract = selector.xpath("//div[@class='abstractSection']/p/text()")
 
         ref = selector.xpath("//span[@class='references__note']/text()")
         index_1 = selector.xpath("//ol[@class='rlist level-1']/li/div/p/a/text()")
