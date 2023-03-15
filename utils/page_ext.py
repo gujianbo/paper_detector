@@ -20,7 +20,7 @@ class PageExtraction:
         page = selector.xpath("//span[@class='epub-section__pagerange']/text()")
         doi = selector.xpath("//a[@class='issue-item__doi']/text()")
         pub_data = selector.xpath("//span[@class='CitationCoverDate']/text()")
-        abstract = selector.xpath("//div[@class='abstractSection']/p/text()")
+        abstract = selector.xpath("//div[@class='abstractSection abstractInFull']/p/text()")
 
         info = {
             "title": title[0],
