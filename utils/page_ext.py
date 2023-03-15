@@ -23,6 +23,7 @@ class PageExtraction:
         abstract = selector.xpath("//div[@class='abstractSection abstractInFull']/p/text()")
 
         ref = selector.xpath("//span[@class='references__note']/text()")
+        index_1 = selector.xpath("//ol[@class='rlist level-1']/li/div/p/a/text()")
 
         info = {
             "title": title[0],
@@ -33,7 +34,8 @@ class PageExtraction:
             "doi": doi[0],
             "pub_data": pub_data[0],
             "abstract": abstract,
-            "ref": ref
+            "ref": ref,
+            "index_1": index_1
         }
         print(info)
 
