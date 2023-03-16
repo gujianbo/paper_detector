@@ -10,7 +10,7 @@ class PageExtraction:
         html = requests.get(url, headers=self.head)
         return html.text
 
-    def get_info(self, url):
+    def get_acm_info(self, url):
         html_text = self.get_html_text(url)
         selector = etree.HTML(html_text)
         title = selector.xpath("//h1[@class='citation__title']/text()")
@@ -25,15 +25,43 @@ class PageExtraction:
         ref = selector.xpath("//span[@class='references__note']/text()")
 
         info = {
-            "title": title[0],
+            "title": title[0] if len(title) > 0 else "",
             "author": author,
-            "conference": conference[0],
-            "date": date[0],
-            "page": page[0],
-            "doi": doi[0],
-            "pub_data": pub_data[0],
-            "abstract": abstract,
-            "ref": ref[:3]
+            "conference": conference[0] if len(conference) > 0 else "",
+            "date": date[0] if len(date) > 0 else "",
+            "page": page[0] if len(page) > 0 else "",
+            "doi": doi[0] if len(doi) > 0 else "",
+            "pub_data": pub_data[0] if len(pub_data) > 0 else "",
+            "abstract": "\n".join(abstract),
+            "ref": ref
         }
         print(info)
+
+    def get_arxiv_info(self, url):
+        html_text = self.get_html_text(url)
+        selector = etree.HTML(html_text)
+        title = selector.xpath("//h1[contains(@class,'title')]/text()")
+        author = selector.xpath("//div[@class='authors']/a/text()")
+        comments = selector.xpath("//td[@class='comments']/text()")
+        last_sub_data = selector.xpath("//div[@class='submission-history']/text()[last()]]")
+        abstract = selector.xpath("//blockquote[contains(@class,'abstract')]/text()")
+        ref = selector.xpath("//span[@class='references__note']/text()")
+        subjects_arr = selector.xpath("//td[@class='subjects']/text()")
+        subjects = []
+        for sub in subjects_arr:
+            subjects += sub.strip().strip(";").split(";")
+        primary_subject = selector.xpath("//span[@class='primary-subject']/text()")
+
+        info = {
+            "title": title[0] if len(title) > 0 else "",
+            "author": author,
+            "comments": comments[0] if len(comments) > 0 else "",
+            "last_sub_data": last_sub_data[0] if len(last_sub_data) > 0 else "",
+            "abstract": "\n".join(abstract),
+            "ref": ref,
+            "primary_subject": primary_subject[0] if len(primary_subject) > 0 else "",
+            "subjects": subjects,
+        }
+        print(info)
+
 
