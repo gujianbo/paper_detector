@@ -43,7 +43,7 @@ class PageExtraction:
         title = selector.xpath("//h1[contains(@class,'title')]/text()")
         author = selector.xpath("//div[@class='authors']/a/text()")
         comments = selector.xpath("//td[@class='comments']/text()")
-        last_sub_data = selector.xpath("//div[@class='submission-history']/text()[last()]]")
+        last_sub_data = selector.xpath("//div[@class='submission-history']/text()")
         abstract = selector.xpath("//blockquote[contains(@class,'abstract')]/text()")
         ref = selector.xpath("//span[@class='references__note']/text()")
         subjects_arr = selector.xpath("//td[@class='subjects']/text()")
@@ -56,7 +56,7 @@ class PageExtraction:
             "title": title[0] if len(title) > 0 else "",
             "author": author,
             "comments": comments[0] if len(comments) > 0 else "",
-            "last_sub_data": last_sub_data[0] if len(last_sub_data) > 0 else "",
+            "last_sub_data": last_sub_data[-1] if len(last_sub_data) > 0 else "",
             "abstract": "\n".join(abstract),
             "ref": ref,
             "primary_subject": primary_subject[0] if len(primary_subject) > 0 else "",
