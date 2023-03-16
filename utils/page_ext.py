@@ -8,7 +8,7 @@ class PageExtraction:
 
     def get_html_text(self, url):
         html = requests.get(url, headers=self.head)
-        return html.text.decode("utf-8")
+        return html.content.decode("utf-8")
 
     def get_acm_info(self, url):
         html_text = self.get_html_text(url)
