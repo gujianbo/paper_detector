@@ -8,11 +8,11 @@ class PageExtraction:
 
     def get_html_text(self, url):
         html = requests.get(url, headers=self.head)
-        return html.text
+        return html.text.decode("utf-8")
 
     def get_acm_info(self, url):
         html_text = self.get_html_text(url)
-        selector = etree.HTML(html_text)
+        selector = etree.HTML(html_text.encode("utf-8"))
         title = selector.xpath("//h1[@class='citation__title']/text()")
         author = selector.xpath("//span[@class='loa__author-name']/span/text()")
         conference = selector.xpath("//span[@class='epub-section__title']/text()")
@@ -39,7 +39,7 @@ class PageExtraction:
 
     def get_arxiv_info(self, url):
         html_text = self.get_html_text(url)
-        selector = etree.HTML(html_text)
+        selector = etree.HTML(html_text.encode("utf-8"))
         title = selector.xpath("//h1[contains(@class,'title')]/text()")
         author = selector.xpath("//div[@class='authors']/a/text()")
         comments = selector.xpath("//td[@class='comments']/text()")
