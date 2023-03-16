@@ -42,11 +42,11 @@ class PageExtraction:
         selector = etree.HTML(html_text.encode("utf-8"))
         title = selector.xpath("//h1[contains(@class,'title')]/text()")
         author = selector.xpath("//div[@class='authors']/a/text()")
-        comments = selector.xpath("//td[@class='comments']/text()")
+        comments = selector.xpath("//td[contains(@class,'comments')]/text()")
         last_sub_data = selector.xpath("//div[@class='submission-history']/text()")
         abstract = selector.xpath("//blockquote[contains(@class,'abstract')]/text()")
         ref = selector.xpath("//span[@class='references__note']/text()")
-        subjects_arr = selector.xpath("//td[@class='subjects']/text()")
+        subjects_arr = selector.xpath("//td[contains(@class,'subjects')]/text()")
         subjects = []
         for sub in subjects_arr:
             subjects += sub.strip().strip(";").split(";")
@@ -56,8 +56,8 @@ class PageExtraction:
             "title": title[0] if len(title) > 0 else "",
             "author": author,
             "comments": comments[0] if len(comments) > 0 else "",
-            "last_sub_data": last_sub_data[-1] if len(last_sub_data) > 0 else "",
-            "abstract": "\n".join(abstract),
+            "last_sub_data": last_sub_data[-1].replace("\n", " ").strip() if len(last_sub_data) > 0 else "",
+            "abstract": "\n".join([abs.replace("\n", " ").strip() for abs in abstract]),
             "ref": ref,
             "primary_subject": primary_subject[0] if len(primary_subject) > 0 else "",
             "subjects": subjects,
