@@ -31,27 +31,59 @@ class ArxivPortalSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        title = response.xpath('//div[@id="abs"]/h1[contains(@class, "title")]/text()').extract_first().strip()
-        authors = response.xpath('//div[@id="abs"]/div[contains(@class, "authors")]/a/text()').extract_first().strip()
+        title = response.xpath('//div[@id="abs"]/h1[contains(@class, "title")]/text()').extract_first()
+        if title:
+            title = title.strip()
+        else:
+            return
+
+        authors = response.xpath('//div[@id="abs"]/div[contains(@class, "authors")]/a/text()').extract_first()
+        if authors:
+            authors = authors.strip()
+        else:
+            authors = ""
+
         abstract = response.xpath('//div[@id="abs"]/blockquote[contains(@class, "abstract")]/text()').extract()
-        abstract = " ".join(abstract).replace("\n", " ").strip()
-        comments = response.xpath('//div[@class="metatable"]//td[contains(@class, "comments")]/text()').extract_first().strip()
+        if abstract:
+            abstract = " ".join(abstract).replace("\n", " ").strip()
+        else:
+            abstract = ""
+
+        comments = response.xpath('//div[@class="metatable"]//td[contains(@class, "comments")]/text()').extract_first()
+        if comments:
+            comments = comments.strip()
+        else:
+            comments = ""
+
         subjects = response.xpath('//div[@class="metatable"]//td[contains(@class, "subjects")]')
-        subjects = subjects.xpath("string(.)").extract()[0].replace("\n", "").strip()
+        if subjects:
+            subjects = subjects.xpath("string(.)").extract()[0].replace("\n", "").strip()
+        else:
+            subjects = ""
+
         submission_his = response.xpath('//div[@class="submission-history"]/text()').extract()
-        submission_his = [item.replace("\n", "").strip() for item in submission_his if item.replace("\n", "").strip() != ""]
-        submission_his = [item for item in submission_his if re.match(r".*20\d{2}.*", item)]
+        if submission_his:
+            submission_his = [item.replace("\n", "").strip() for item in submission_his if item.replace("\n", "").strip() != ""]
+            submission_his = [item for item in submission_his if re.match(r".*20\d{2}.*", item)]
+        else:
+            submission_his = []
+
         url = response.url
-        pdf_url = "https://arxiv.org" + response.xpath('//div[@class="full-text"]//a[contains(@class, "download-pdf")]/@href').extract_first().strip()
+        pdf_url = response.xpath('//div[@class="full-text"]//a[contains(@class, "download-pdf")]/@href').extract_first()
+        if pdf_url:
+            pdf_url = "https://arxiv.org" + pdf_url.strip()
+        else:
+            pdf_url = ""
         crawl_time = int(time.time())
         reg = r"https\://arxiv\.org/abs/(\d+\.\d+)"
         id_match = re.match(reg, url)
         if not id_match:
             logging.error(f"url {url} reg error!")
         else:
-            id = id_match.groups()[0]
+            arxiv_id = id_match.groups()[0]
             yield ArxivItem(
-                _id=id,
+                _id=arxiv_id,
+                arxiv_id=arxiv_id,
                 title=title,
                 authors=authors,
                 abstract=abstract,

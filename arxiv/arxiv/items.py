@@ -9,6 +9,7 @@ import scrapy
 class ArxivItem(scrapy.Item):
     # define the fields for your item here like:
     _id = scrapy.Field()
+    arxiv_id = scrapy.Field()
     title = scrapy.Field()
     authors = scrapy.Field()
     abstract = scrapy.Field()
