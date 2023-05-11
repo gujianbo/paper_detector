@@ -27,13 +27,13 @@ class ArxivPortalSpider(CrawlSpider):
     rules = (
         Rule(LinkExtractor(allow=r"https\://arxiv\.org/list/(cs|stat)\.(AI|CV|LG|MM|DC|HC|SD|RO|NE|ML)/pastweek\?skip=\d+&show=25*"), follow=True),
         Rule(LinkExtractor(allow=r"https\://arxiv\.org/list/(cs|stat)\.(AI|CV|LG|MM|DC|HC|SD|RO|NE|ML)/recent"), follow=True),
-        Rule(LinkExtractor(allow=r"https\://arxiv\.org/abs/\d+\.\d+"), callback="parse_item", follow=True)
+        Rule(LinkExtractor(allow=r"https\://arxiv\.org/abs/\d+\.\d+"), callback="parse_item", follow=False)
     )
 
     def parse_item(self, response):
         title = response.xpath('//div[@id="abs"]/h1[contains(@class, "title")]/text()').extract_first().strip()
-        authors = response.xpath('//div[@id="abs"]/div[contains(@class, "authors")]/a/text()').extract().strip()
-        abstract = response.xpath('//div[@id="abs"]/blockquote[contains(@class, "abstract")]/text()').extract().strip()
+        authors = response.xpath('//div[@id="abs"]/div[contains(@class, "authors")]/a/text()').extract_first().strip()
+        abstract = response.xpath('//div[@id="abs"]/blockquote[contains(@class, "abstract")]/text()').extract()
         abstract = " ".join(abstract).replace("\n", " ").strip()
         comments = response.xpath('//div[@class="metatable"]//td[contains(@class, "comments")]/text()').extract_first().strip()
         subjects = response.xpath('//div[@class="metatable"]//td[contains(@class, "subjects")]')
