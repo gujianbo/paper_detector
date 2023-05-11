@@ -3,9 +3,9 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 import re
 import time
-import sys
-sys.path.append("..")
-from items import ArxivItem
+# import sys
+# sys.path.append("..")
+from arxiv.items import ArxivItem
 import logging
 
 
