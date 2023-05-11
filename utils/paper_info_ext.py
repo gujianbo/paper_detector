@@ -2,7 +2,7 @@ import requests
 from lxml import etree
 
 
-class PageExtraction:
+class PaperInfoExtraction:
     def __init__(self, head={'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'}):
         self.head = head
 
@@ -45,10 +45,13 @@ class PageExtraction:
         comments = selector.xpath("//td[contains(@class,'comments')]/text()")
         last_sub_data = selector.xpath("//div[@class='submission-history']/text()")
         abstract = selector.xpath("//blockquote[contains(@class,'abstract')]/text()")
-        print(abstract)
+        # print(abstract)
         subjects_arr = selector.xpath("//td[contains(@class,'subjects')]/text()")
         subjects = []
+        # print(subjects_arr)
         for sub in subjects_arr:
+            if sub.strip().strip(";").strip() == "":
+                continue
             if len(subjects) == 0:
                 subjects = sub.strip().strip(";").strip().split(";")
             else:
@@ -66,5 +69,11 @@ class PageExtraction:
             "subjects": subjects,
         }
         print(info)
+        return info
 
 
+if __name__ == "__main__":
+    pe = PaperInfoExtraction()
+    pe.get_arxiv_info("https://arxiv.org/abs/1706.1")
+    html_text = pe.get_html_text("https://arxiv.org/abs/1706.1")
+    print(html_text)
