@@ -4,6 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from fake_useragent import UserAgent
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -69,6 +70,7 @@ class ArxivDownloaderMiddleware:
         return s
 
     def process_request(self, request, spider):
+        request.headers["User-Agent"] = UserAgent.random()
         # Called for each request that goes through the downloader
         # middleware.
 
