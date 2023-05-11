@@ -59,7 +59,8 @@ class ArxivSpiderMiddleware:
 
 class UAMiddleware:
     def process_request(self, request, spider):
-        request.headers["User-Agent"] = UserAgent().random
+        user_agent = UserAgent().random
+        request.headers.setdefault('User-Agent', user_agent)
         return None
 
 
