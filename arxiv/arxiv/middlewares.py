@@ -73,8 +73,11 @@ class ProxyMiddleware:
         return cls(iplist)
 
     def process_request(self, request, spider):
-        proxy = "http://" + choice(self.iplist)
+        proxy = choice(self.iplist)
+        proxy = "https://" + proxy
+        print(f"proxy: {proxy}")
         request.meta["proxy"] = proxy
+        return None
 
 
 class UAMiddleware:
