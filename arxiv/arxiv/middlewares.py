@@ -69,9 +69,8 @@ class ProxyMiddleware:
         """
         获取spider的settings参数,返回中间件实例对象
         """
-        settings = get_project_settings()
-
-        iplist = settings["proxy_list"]
+        logging.info(f"settings: {crawler.settings}")
+        iplist = crawler.settings["PROXY_LIST"]
         logging.info(f"proxy_list: {iplist}")
 
         return cls(iplist)

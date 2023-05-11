@@ -119,6 +119,6 @@ LOG_STDOUT = True
 LOG_SHORT_NAMES = False
 
 
-proxy_list = [
+PROXY_LIST = [
    "111.225.153.243:8089"
 ]
