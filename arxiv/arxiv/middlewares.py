@@ -5,6 +5,7 @@
 
 from scrapy import signals
 from fake_useragent import UserAgent
+from random import choice
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -55,6 +56,25 @@ class ArxivSpiderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class ProxyMiddleware:
+    def __init__(self, iplist):
+        self.iplist = iplist
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        """
+        获取spider的settings参数,返回中间件实例对象
+        """
+        iplist = "http://" + crawler.settings.get("proxy_list")
+        print(f"proxy_list: {iplist}")
+
+        return cls(iplist)
+
+    def process_request(self, request, spider):
+        proxy = choice(self.iplist)
+        request.meta["proxy"] = proxy
 
 
 class UAMiddleware:
