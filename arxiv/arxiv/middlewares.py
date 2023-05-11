@@ -6,6 +6,8 @@
 from scrapy import signals
 from fake_useragent import UserAgent
 from random import choice
+import logging
+from scrapy.utils.project import get_project_settings
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -67,15 +69,17 @@ class ProxyMiddleware:
         """
         获取spider的settings参数,返回中间件实例对象
         """
-        iplist = crawler.settings.get("proxy_list")
-        print(f"proxy_list: {iplist}")
+        settings = get_project_settings()
+
+        iplist = settings["proxy_list"]
+        logging.info(f"proxy_list: {iplist}")
 
         return cls(iplist)
 
     def process_request(self, request, spider):
         proxy = choice(self.iplist)
         proxy = "https://" + proxy
-        print(f"proxy: {proxy}")
+        logging.info(f"proxy: {proxy}")
         request.meta["proxy"] = proxy
         return None
 
