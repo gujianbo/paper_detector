@@ -70,7 +70,7 @@ class ArxivDownloaderMiddleware:
         return s
 
     def process_request(self, request, spider):
-        request.headers["User-Agent"] = UserAgent.random()
+        request.headers["User-Agent"] = UserAgent().random
         # Called for each request that goes through the downloader
         # middleware.
 
