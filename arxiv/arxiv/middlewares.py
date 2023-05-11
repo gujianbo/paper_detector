@@ -57,6 +57,12 @@ class ArxivSpiderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
+class UAMiddleware:
+    def process_request(self, request, spider):
+        request.headers["User-Agent"] = UserAgent().random
+        return None
+
+
 class ArxivDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
@@ -70,7 +76,6 @@ class ArxivDownloaderMiddleware:
         return s
 
     def process_request(self, request, spider):
-        request.headers["User-Agent"] = UserAgent().random
         # Called for each request that goes through the downloader
         # middleware.
 
