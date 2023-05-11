@@ -74,6 +74,6 @@ class PaperInfoExtraction:
 
 if __name__ == "__main__":
     pe = PaperInfoExtraction()
-    pe.get_arxiv_info("https://arxiv.org/abs/1706.1")
-    html_text = pe.get_html_text("https://arxiv.org/abs/1706.1")
+    pe.get_arxiv_info("https://arxiv.org/abs/1706.001")
+    html_text = pe.get_html_text("https://arxiv.org/abs/1706.001")
     print(html_text)
